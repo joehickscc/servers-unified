@@ -1,3 +1,6 @@
 [submodule "extends"]
 	path = extends
 	url = git@github.com:CloudCoreo/servers-base.git
+[submodule "stack-vpc-unified/extends"]
+	path = stack-vpc-unified/extends
+	url = git@github.com:CloudCoreo/vpc-unified.git
