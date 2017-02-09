@@ -4,7 +4,7 @@
 coreo_aws_ec2_securityGroups "${SERVER_NAME}${SUFFIX}" do
   action :sustain
   description "Server security group"
-  vpc "${VPC_NAME}"
+  vpc "${VPC_NAME}${SUFFIX}"
   allows [ 
           { 
             :direction => :ingress,
@@ -27,7 +27,7 @@ coreo_aws_ec2_instance "${SERVER_NAME}${SUFFIX}" do
   security_groups ["${SERVER_NAME}${SUFFIX}"]
 #  role "${SERVER_NAME}"
   ssh_key "${SERVER_KEYPAIR}"
-  associate_public_ip true
+  associate_public_ip "${ASSOCIATE_PUBLIC_IP}"
   upgrade_trigger "${SERVER_UPGRADE_TRIGGER}"
   disks [
          {
@@ -35,6 +35,8 @@ coreo_aws_ec2_instance "${SERVER_NAME}${SUFFIX}" do
            :volume_size => 16
          }
         ]
+
+# Joe and Jacob to check these environment variables with Paul
   environment_variables [
          "ENV=my_env",
          "TEST=true",
@@ -44,8 +46,8 @@ end
 
 coreo_aws_ec2_autoscaling "${SERVER_NAME}${SUFFIX}" do
   action :sustain 
-  minimum 1
-  maximum 1
+  minimum ${ASG_MIN}
+  maximum ${ASG_MAX}
   server_definition "${SERVER_NAME}${SUFFIX}"
   subnet "${PUBLIC_SUBNET_NAME}"
 end
